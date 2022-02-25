@@ -11,6 +11,7 @@
 <script>
 import Post from '@/components/PostComponent.vue'
 import Form from '@/components/NewPostForm.vue'
+import axios from 'axios'
 
 export default {
   name: 'App',
@@ -31,13 +32,21 @@ export default {
       ]
     }
   },
+  async mounted(){
+    const response = await axios.get('http://localhost:3000/api/post')
+    console.log(response.data)
+    this.posts = response.data
+  },
   methods:{
-    addPost(post){
+    async addPost(post){
      // let id = 0;
      // if(this.posts.length>0){
        // id = this.posts[this.posts.length-1].id+1;
       
-      this.posts=[...this.posts, post]
+      //this.posts=[...this.posts, post]
+      const response = await axios.post('http://localhost:3000/api/post', {text: post.text})
+      this.posts.push(response.data)
+      
     }
   }
 }
